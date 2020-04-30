@@ -1,5 +1,3 @@
-/*第一次更改*/
-
 #include<stdio.h>
 
 #define SIZE 50//栈的最大容量
@@ -65,7 +63,7 @@ void push(int k, char *opter, char c)
     if(c != '(' && c != ')' && c != '#')
     {
         for(; m < k; m++)
-            switch(m)
+            switch(opter[m])
             {
             case '-':
                 n++;
@@ -113,17 +111,14 @@ void calculator()
             switch(getPriority(opter[j], c))
             {
             case '<':
-                ++j;
-                push(j, opter, c);
+                push(++j, opter, c);
                 break;
             case '=':
                 if(opter[j] == '(') c = '(';
-                opter[j] = NULL;
-                j--;
+                opter[j--] = NULL;
                 break;
             case '>':
-                i--;
-                opnd[i] = calculate(opnd[i], opnd[i+1], opter[j]);
+                opnd[--i] = calculate(opnd[i-1], opnd[i], opter[j]);
                 push(j, opter, c);
                 break;
             }
