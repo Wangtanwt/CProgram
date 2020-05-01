@@ -56,7 +56,7 @@ int calculate(int opend1, int opend2, char opter)
     }
 }
 
-void push(int k, char *opter, char c)
+void pushOpter(int k, char* opter, char c)
 {
     int m = 1, n = 0, d = 0;
     //当有过多括号时，需要通过变换符号以解决括号的影响
@@ -100,26 +100,32 @@ void calculator()
         //计算终止条件是操作符栈为空
     {
         //按照括号内视为整体的思想，在两括号结束时将其计算为一个数后，再继续后续运算
-        if(c != '#' && c!=')')
+        if(c != '#' && c != ')')
         {
             c = getchar();
             if(c != '#') printf("%c", c);
         }
         if(c>='0' && c <= '9')
-            opnd[++i] = c - '0';
+        {
+            i++;
+            opnd[i] = c - '0';
+        }
         else
             switch(getPriority(opter[j], c))
             {
             case '<':
-                push(++j, opter, c);
+                j++;
+                pushOpter(j, opter, c);
                 break;
             case '=':
                 if(opter[j] == '(') c = '(';
-                opter[j--] = NULL;
+                opter[j] = NULL;
+                j--;
                 break;
             case '>':
-                opnd[--i] = calculate(opnd[i-1], opnd[i], opter[j]);
-                push(j, opter, c);
+                i--;
+                opnd[i] = calculate(opnd[i], opnd[i+1], opter[j]);
+                pushOpter(j, opter, c);
                 break;
             }
     }
@@ -128,6 +134,7 @@ void calculator()
     else
         printf("=%d", opnd[0]);
 }
+
 
 main()
 {
