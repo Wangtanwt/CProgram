@@ -129,11 +129,11 @@ int correlationTest(int index, int length) {
 
     sprintf(path, "data\\PSS0.txt");//构建PSS0文件地址字符串
     fp = fopen(path, "r");
-    while(!feof(fp)){//获取PSS0文件中复数的个数，初始化检验结果最大值
+    for(i = 0;!feof(fp); i++, pss0len++){//获取PSS0文件中复数的个数，初始化检验结果最大值
         fscanf(fp, "%lf\n%lf\n", &re, &im);
         max += sqrt(re*re+im*im)*data[i];
-        pss0len++;
     }
+
     double *pss0 = (double*)malloc(pss0len*sizeof(double));//按照前边计算的复数个数申请足够的空间
     rewind(fp);//将文件读取指针重置到文件开头，以重新从文件中读取数据
     for(i = 0; !feof(fp); i++){//计算并存储PSS0文件中每个数字的模
@@ -141,11 +141,11 @@ int correlationTest(int index, int length) {
         pss0[i] = sqrt(re*re+im*im);
     }
     for(j = 1; j <= length-pss0len; j++){//滑动检测，同时寻找最大值，并记录取得最大值时滑动的长度
-        for(i = 0; i < pss0len; i++)
+        for(i = 0, temp = 0.0; i < pss0len; i++)
             temp += pss0[i]*data[i+j];
         if(temp > max){
             max = temp;
-            maxPos = j;
+            maxPos = j+1;
         }
     }
         fclose(fp);//关闭PSS0文件
@@ -163,6 +163,7 @@ int main() {
     printf("小区\t\t信号强度\n");
     for(int i = 0; i < 48; i++)
         printf("data%2d\t%20lf\n", baseStation[i].index, baseStation[i].intensity);
-    printf("应选择的小区是data%d\n", baseStation[0].index);
-    printf("最强信号序列中所包含的确定信号序列的起始位置(相对于PSS0确定文件)是文件中第%d个复数", correlationTest(baseStation[0].index, baseStation[0].length));
+    printf("应选择的小区是data%d\n", baseStation[3].index);
+    printf("最强信号序列中所包含的确定信号序列的起始位置(相对于PSS0确定信号)是文件中第%d个复数", correlationTest(baseStation[47].index, baseStation[47].length));
+    return 0;
 }
