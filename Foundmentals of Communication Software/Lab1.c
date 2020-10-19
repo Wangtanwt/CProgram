@@ -228,7 +228,7 @@ void test(double *data, double *pssData, double *maxResult, int *maxPos, int *ps
  *      int *pss：指向最大结果所对应pss文件的指针
  *返回值: 无
  */
-void correlationTest(BASESTATION base, int *maxResult, int *maxPos,double *pss) {
+void correlationTest(BASESTATION base, double *maxResult, int *maxPos,double *pss) {
     int psslen, i;
     double *data = (double*)malloc(base.length*sizeof(double));//根据文件长度动态申请连续存储空间，以存放文件中各个复数的实部和虚部，方便后续检验算法
 
