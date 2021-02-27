@@ -116,6 +116,7 @@ void display(GRAPH graph) {
  * 功能：利用迪杰斯特拉算法获取图各个结点的最短路径
  *参数列表:
  *      GRAPH graph：待操作的图
+ *返回值：无
  */
 void getShortestPath(GRAPH *graph) {
     int i, j, from, to, rear = 1, front = 0;
@@ -153,6 +154,7 @@ void getShortestPath(GRAPH *graph) {
  *参数列表:
  *      GRAPH graph：待操作的图
  *      int beginning：起始点
+ *返回值:无
  */
 void displayShortestPath(GRAPH graph, int beginning) {
     int i, j;
